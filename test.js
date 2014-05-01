@@ -1,14 +1,14 @@
 'use strict';
 var assert = require('assert');
 var gutil = require('gulp-util');
-var fork = require('./index');
+var forEach = require('./index');
 var through = require('through');
 
 it('should call the function once per file', function (cb) {
   
   var count = 0;
     
-  var stream = fork(function(stream){
+  var stream = forEach(function(stream){
     count++;
   });
 
@@ -39,7 +39,7 @@ it('should be possible to return a stream from the function', function (cb) {
     
   var count = 0;
   
-  var stream = fork(function(stream){
+  var stream = forEach(function(stream){
     return stream;
   });
 
@@ -76,7 +76,7 @@ it('should support multiple outputs', function (cb) {
   
   var count = 0;
     
-  var stream = fork(function(stream){
+  var stream = forEach(function(stream){
     return stream.pipe(through(function(file){
       console.log("file contents", file.contents.toString());
       this.queue(file);
@@ -117,8 +117,8 @@ it('should support multiple outputs', function (cb) {
 
 it('should throw an error if not called with a function', function(){
   
-  assert.throws(fork);
-  assert.throws(fork.bind(null, {}));
+  assert.throws(forEach);
+  assert.throws(forEach.bind(null, {}));
   
 });
 

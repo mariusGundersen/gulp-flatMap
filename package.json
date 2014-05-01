@@ -1,9 +1,9 @@
 {
-  "name": "gulp-fork",
+  "name": "gulp-forEach",
   "version": "0.0.0",
   "description": "Send each file in a stream down its own stream",
   "license": "MIT",
-  "repository": "mariusGundersen/gulp-fork",
+  "repository": "mariusGundersen/gulp-forEach",
   "author": {
     "name": "Marius Gundersen",
     "email": "me@mariusgundersen.net",
@@ -19,7 +19,7 @@
     "index.js"
   ],
   "keywords": [
-    "gulpplugin"
+    "gulpplugin forEach split fork divide separate map gulp"
   ],
   "dependencies": {
     "gulp-util": "~2.2.14",

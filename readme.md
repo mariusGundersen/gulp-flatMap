@@ -1,4 +1,4 @@
-# [gulp](http://gulpjs.com)-fork [![Build Status](https://travis-ci.org/mariusGundersen/gulp-fork.svg?branch=master)](https://travis-ci.org/mariusGundersen/gulp-fork)
+# [gulp](http://gulpjs.com)-forEach
 
 > Send each file in a stream down its own stream
 
@@ -6,7 +6,7 @@
 ## Install
 
 ```bash
-$ npm install --save-dev gulp-fork
+$ npm install --save-dev gulp-forEach
 ```
 
 
@@ -14,11 +14,11 @@ $ npm install --save-dev gulp-fork
 
 ```js
 var gulp = require('gulp');
-var fork = require('gulp-fork');
+var forEach = require('gulp-forEach');
 
 gulp.task('default', function () {
   return gulp.src('src/app.ext')
-    .pipe(fork(function(stream){
+    .pipe(forEach(function(stream){
       return stream
         .pipe(gulp.dest('dist'));
     }));
@@ -28,7 +28,7 @@ gulp.task('default', function () {
 
 ## API
 
-The fork method takes one argument, a function. This function is called once for each file piped to fork. The function is passed a stream as its only argument, and it must return a stream. 
+The forEach method takes one argument, a function. This function is called once for each file piped to forEach. The function is passed a stream as its only argument, and it must return a stream. 
 
 ## License
 

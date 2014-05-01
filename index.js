@@ -10,7 +10,7 @@ var Readable = Stream.Readable;
 module.exports = function (func) {
   
   if (!func || typeof func != 'function') {
-    throw new gutil.PluginError('gulp-fork', '`fork` must be called with one parameter, a function');
+    throw new gutil.PluginError('gulp-forEach', '`forEach` must be called with one parameter, a function');
   }
   
   var openStreams = [];
@@ -30,7 +30,7 @@ module.exports = function (func) {
     console.log("file", data);
     
     if (data.isStream()) {
-      this.emit('error', new gutil.PluginError('gulp-fork', 'Streaming not supported'));
+      this.emit('error', new gutil.PluginError('gulp-forEach', 'Streaming not supported'));
       return;
     }    
     
