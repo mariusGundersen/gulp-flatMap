@@ -28,6 +28,12 @@ module.exports = function (func) {
   
   return through(function(data){
     console.log("file", data);
+    
+    if (data.isStream()) {
+      this.emit('error', new gutil.PluginError('gulp-fork', 'Streaming not supported'));
+      return;
+    }    
+    
     var self = this;    
     var notYetRead = true;
     

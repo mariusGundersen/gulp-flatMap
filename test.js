@@ -113,3 +113,15 @@ it('should support multiple outputs', function (cb) {
   });
   
 });
+
+
+it('should throw an error if not called with a function', function(){
+  
+  assert.throws(fork);
+  assert.throws(fork.bind(null, {}));
+  
+});
+
+it('should emit an error if it is passed a stream', function(){
+  
+});
