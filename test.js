@@ -122,6 +122,23 @@ it('should throw an error if not called with a function', function(){
   
 });
 
-it('should emit an error if it is passed a stream', function(){
+it('should pass the file as the second argument to the function', function(cb){
+    
+  var stream = forEach(function(stream, file){
+    return stream.pipe(through(function(data){
+      assert.equal(data, file);
+    }));
+  });
+
+  stream.write(new gutil.File({
+    base: __dirname,
+    path: 'file.ext',
+    contents: new Buffer('unicorns')
+  }));
+    
+  stream.end();
   
+  stream.on('end', function(){
+    cb();
+  });
 });

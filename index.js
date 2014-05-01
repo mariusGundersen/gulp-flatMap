@@ -49,7 +49,7 @@ module.exports = function (func) {
       }
     };
         
-    var resultStream = func(readStream);
+    var resultStream = func(readStream, data);
     
     if(resultStream){
     

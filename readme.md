@@ -18,9 +18,10 @@ var forEach = require('gulp-forEach');
 
 gulp.task('default', function () {
   return gulp.src('src/*.js')
-    .pipe(forEach(function(stream){
+    .pipe(forEach(function(stream, file){
       return stream
-        .pipe(doSomethingWithEachFileIndividually());
+        .pipe(doSomethingWithEachFileIndividually())
+        .pipe(concat(file.name));
     }))
     .pipe(gulp.dest('dist'));
 });
@@ -29,7 +30,7 @@ gulp.task('default', function () {
 
 ## API
 
-The forEach method takes one argument, a function. This function is called once for each file piped to forEach and is passed a stream as its only argument. The stream contains only one file.
+The forEach method takes one argument, a function. This function is called once for each file piped to `forEach` and is passed a stream as its first argument and the file as its second argument. The stream contains only one file.
 
 You can optionally return a stream from the `forEach` function. All the streams returned from `forEach` will be combined and their contents will be emited by `forEach`. 
 
