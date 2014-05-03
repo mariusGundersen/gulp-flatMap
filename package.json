@@ -19,7 +19,14 @@
     "index.js"
   ],
   "keywords": [
-    "gulpplugin forEach split fork divide separate map gulp"
+    "gulpplugin",
+    "forEach",
+    "split",
+    "fork",
+    "divide",
+    "separate",
+    "map",
+    "gulp"
   ],
   "dependencies": {
     "gulp-util": "~2.2.14",
