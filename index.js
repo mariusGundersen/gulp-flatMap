@@ -7,40 +7,53 @@ var Readable = Stream.Readable;
 
 
 
-module.exports = function (func) {
-  
-  if (!func || typeof func != 'function') {
-    throw new gutil.PluginError('gulp-forEach', '`forEach` must be called with one parameter, a function');
+module.exports = function (options, func) {
+
+  // Allow users to omit the options object
+  if (typeof options === 'function') {
+    func = options;
+    options = {};
   }
-  
+
+  if (!func || typeof func != 'function') {
+    throw new gutil.PluginError('gulp-forEach', '`forEach` must be called with a function');
+  }
+
   var openStreams = [];
   var ended = false;
-  
-    
+
+
   function closeStreamIfNoMoreOpenStreams(stream){
     if(openStreams.length == 0){
-      console.log("close", ended);
+      if (options.debug) {
+        console.log("close", ended);
+      }
       if(ended){
         stream.queue(null);
       }
     }
   }
-  
+
   return through(function(data){
-    console.log("file", data);
-    
+    if (options.debug) {
+      console.log("file", data);
+    }
+
     if (data.isStream()) {
       this.emit('error', new gutil.PluginError('gulp-forEach', 'Streaming not supported'));
       return;
-    }    
-    
-    var self = this;    
+    }
+
+    var self = this;
     var notYetRead = true;
-    
-    
+
+
     var readStream = new Readable({objectMode: true});
     readStream._read = function(){
-      console.log("read", notYetRead);
+      if (options.debug) {
+        console.log("read", notYetRead);
+      }
+
       if(notYetRead){
         notYetRead = false;
         readStream.push(data);
@@ -48,11 +61,11 @@ module.exports = function (func) {
         readStream.push(null);
       }
     };
-        
+
     var resultStream = func(readStream, data);
-    
+
     if(resultStream){
-    
+
       openStreams.push(resultStream);
 
       resultStream.on('end', function(){
@@ -61,15 +74,20 @@ module.exports = function (func) {
       });
 
       resultStream.on('data', function(result){
-        console.log("result", result);
+        if (options.debug) {
+          console.log("result", result);
+        }
         self.queue(result);
       });
     }else{
       closeStreamIfNoMoreOpenStreams(self);
-    }      
-        
+    }
+
   }, function(){
-    console.log('end', openStreams.length);
+    if (options.debug) {
+      console.log('end', openStreams.length);
+    }
+
     ended = true;
     closeStreamIfNoMoreOpenStreams(this);
   });
