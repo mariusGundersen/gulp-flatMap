@@ -19,7 +19,6 @@ module.exports = function (func) {
     
   function closeStreamIfNoMoreOpenStreams(stream){
     if(openStreams.length == 0){
-      console.log("close", ended);
       if(ended){
         stream.queue(null);
       }
@@ -27,7 +26,6 @@ module.exports = function (func) {
   }
   
   return through(function(data){
-    console.log("file", data);
     
     if (data.isStream()) {
       this.emit('error', new gutil.PluginError('gulp-forEach', 'Streaming not supported'));
@@ -40,7 +38,7 @@ module.exports = function (func) {
     
     var readStream = new Readable({objectMode: true});
     readStream._read = function(){
-      console.log("read", notYetRead);
+      
       if(notYetRead){
         notYetRead = false;
         readStream.push(data);
@@ -61,15 +59,14 @@ module.exports = function (func) {
       });
 
       resultStream.on('data', function(result){
-        console.log("result", result);
         self.queue(result);
       });
+      
     }else{
       closeStreamIfNoMoreOpenStreams(self);
     }      
         
   }, function(){
-    console.log('end', openStreams.length);
     ended = true;
     closeStreamIfNoMoreOpenStreams(this);
   });

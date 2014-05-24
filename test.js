@@ -78,14 +78,12 @@ it('should support multiple outputs', function (cb) {
     
   var stream = forEach(function(stream){
     return stream.pipe(through(function(file){
-      console.log("file contents", file.contents.toString());
       this.queue(file);
       this.queue(file);
     }));
   });
 
   stream.on('data', function (file) {
-    console.log("data");
     count++;
     assert.equal(file.relative, 'file.ext');
     assert.equal(file.contents.toString(), 'unicorns');
