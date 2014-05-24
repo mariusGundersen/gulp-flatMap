@@ -1,4 +1,4 @@
-# [gulp](http://gulpjs.com)-forEach
+# [gulp](http://gulpjs.com)-foreach
 
 > Send each file in a stream down its own stream
 
@@ -6,7 +6,7 @@
 ## Install
 
 ```bash
-$ npm install --save-dev gulp-forEach
+$ npm install --save-dev gulp-foreach
 ```
 
 
@@ -14,11 +14,11 @@ $ npm install --save-dev gulp-forEach
 
 ```js
 var gulp = require('gulp');
-var forEach = require('gulp-forEach');
+var foreach = require('gulp-foreach');
 
 gulp.task('default', function () {
   return gulp.src('src/*.js')
-    .pipe(forEach(function(stream, file){
+    .pipe(foreach(function(stream, file){
       return stream
         .pipe(doSomethingWithEachFileIndividually())
         .pipe(concat(file.name));
@@ -30,9 +30,9 @@ gulp.task('default', function () {
 
 ## API
 
-The forEach method takes one argument, a function. This function is called once for each file piped to `forEach` and is passed a stream as its first argument and the file as its second argument. The stream contains only one file.
+The foreach method takes one argument, a function. This function is called once for each file piped to `foreach` and is passed a stream as its first argument and the file as its second argument. The stream contains only one file.
 
-You can optionally return a stream from the `forEach` function. All the streams returned from `forEach` will be combined and their contents will be emited by `forEach`. 
+You can optionally return a stream from the `foreach` function. All the streams returned from `foreach` will be combined and their contents will be emited by `foreach`. 
 
 ## License
 
