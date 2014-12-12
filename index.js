@@ -1,6 +1,6 @@
 'use strict';
 var gutil = require('gulp-util');
-var through = require('through');
+var through = require('through2');
 var Stream = require('stream');
 var utils = require('util');
 var Readable = Stream.Readable;
@@ -15,17 +15,18 @@ module.exports = function (func) {
   
   var openStreams = [];
   var ended = false;
+  var error = false;
   
     
   function closeStreamIfNoMoreOpenStreams(stream){
     if(openStreams.length == 0){
-      if(ended){
-        stream.queue(null);
+      if(ended && !error){
+        stream.push(null);
       }
     }
   }
   
-  return through(function(data){
+  return through.obj(function(data, enc, done){
     
     if (data.isStream()) {
       this.emit('error', new gutil.PluginError('gulp-forEach', 'Streaming not supported'));
@@ -56,10 +57,16 @@ module.exports = function (func) {
       resultStream.on('end', function(){
         openStreams.splice(openStreams.indexOf(resultStream), 1);
         closeStreamIfNoMoreOpenStreams(self);
+        done();
       });
 
       resultStream.on('data', function(result){
-        self.queue(result);
+        self.push(result);
+      });
+
+      resultStream.on('error', function(error){
+        console.error("error!");
+        done(error);
       });
       
     }else{
