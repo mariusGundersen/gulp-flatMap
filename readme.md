@@ -21,7 +21,7 @@ gulp.task('default', function () {
     .pipe(foreach(function(stream, file){
       return stream
         .pipe(doSomethingWithEachFileIndividually())
-        .pipe(concat(file.name));
+        .pipe(concat(file.base + 'newFile.js'));
     }))
     .pipe(gulp.dest('dist'));
 });
