@@ -37,7 +37,7 @@ gulp.task('default', function () {
 
 ## API
 
-The foreach method takes one argument, a function. This function is called once for each file piped to `foreach` and is passed a stream as its first argument and the [vinyl file](https://github.com/wearefractal/vinyl] as its second argument. The stream contains only one file.
+The foreach method takes one argument, a function. This function is called once for each file piped to `foreach` and is passed a stream as its first argument and the [vinyl file](https://github.com/wearefractal/vinyl) as its second argument. The stream contains only one file.
 
 You can optionally return a stream from the `foreach` function. All the streams returned from `foreach` will be combined and their contents will be emited by `foreach`.
 
