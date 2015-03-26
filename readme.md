@@ -22,7 +22,7 @@ var concat = require('gulp-concat');
 gulp.task('default', function () {
   return gulp.src('*.json')
     .pipe(foreach(function(stream, file){
-      var contents = JSON.parse(file.concents.toString('utf8'));
+      var contents = JSON.parse(file.contents.toString('utf8'));
       //contents.files is an array
       return gulp.src(contents.files)
         //uglify each file individually
