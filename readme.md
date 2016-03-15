@@ -3,6 +3,10 @@
 > Send each file in a stream down its own stream
 
 
+# This plugin performs a flatMap, but it is misnamed. You probably want [gulp-tap](https://www.npmjs.com/package/gulp-tap)
+
+This is not the plugin you are looking for *jedi hand wave*. I created this plugin for a very specific use case I had, but I gave it a too popular name. You probably want the [gulp-tap](https://www.npmjs.com/package/gulp-tap) plugin instead of this one. I will soon remove this plugin and rename it to gulp-flat-map instead, since that is a more accurate name of what it is doing.
+
 ## Install
 
 ```bash
