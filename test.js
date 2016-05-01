@@ -2,84 +2,75 @@
 var assert = require('assert');
 var gutil = require('gulp-util');
 var forEach = require('./index');
-var through = require('through');
+var through = require('through2');
 
 it('should call the function once per file', function (cb) {
-  
+
   var count = 0;
-    
+
   var stream = forEach(function(stream){
     count++;
+    return stream;
   });
 
-  stream.on('end', cb);
+  stream.on('data', function(){
 
-  assert.equal(count, 0);
-  
+  });
+
+  stream.on('end', function(){
+    assert.equal(count, 2);
+    cb();
+  });
+
   stream.write(new gutil.File({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
   }));
-  
-  assert.equal(count, 1);
-  
+
   stream.write(new gutil.File({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
   }));
-  
-  assert.equal(count, 2);
 
   stream.end();
 });
 
-it('should be possible to return a stream from the function', function (cb) {
-    
-  var count = 0;
-  
+it('should require the function returns a stream', function (cb) {
+
   var stream = forEach(function(stream){
-    return stream;
   });
 
   stream.on('data', function (file) {
-    count++;
-    assert.equal(file.relative, 'file.ext');
-    assert.equal(file.contents.toString(), 'unicorns');
   });
 
-  stream.on('end', cb);
+  stream.on('error', function(){
+    cb();
+  });
 
-  assert.equal(count, 0);
-  
+  stream.on('end', function(){
+    cb.fail();
+  });
+
   stream.write(new gutil.File({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
   }));
-  
-  assert.equal(count, 1);
-  
-  stream.write(new gutil.File({
-    base: __dirname,
-    path: 'file.ext',
-    contents: new Buffer('unicorns')
-  }));
-  
-  assert.equal(count, 2);
 
   stream.end();
 });
 
 it('should support multiple outputs', function (cb) {
-  
+
   var count = 0;
-    
+
   var stream = forEach(function(stream){
-    return stream.pipe(through(function(file){
-      this.queue(file);
-      this.queue(file);
+    return stream.pipe(through.obj(function(file, enc, done){
+      this.push(file);
+      this.push(file);
+      done();
     }));
   });
 
@@ -89,43 +80,49 @@ it('should support multiple outputs', function (cb) {
     assert.equal(file.contents.toString(), 'unicorns');
   });
 
-  assert.equal(count, 0);
-  
-  stream.write(new gutil.File({
-    base: __dirname,
-    path: 'file.ext',
-    contents: new Buffer('unicorns')
-  }));
-    
-  stream.write(new gutil.File({
-    base: __dirname,
-    path: 'file.ext',
-    contents: new Buffer('unicorns')
-  }));
-
-  stream.end();
-  
   stream.on('end', function(){
     assert.equal(count, 4);
     cb();
   });
-  
+
+  stream.write(new gutil.File({
+    base: __dirname,
+    path: 'file.ext',
+    contents: new Buffer('unicorns')
+  }));
+
+  stream.write(new gutil.File({
+    base: __dirname,
+    path: 'file.ext',
+    contents: new Buffer('unicorns')
+  }));
+
+  stream.end();
 });
 
 
 it('should throw an error if not called with a function', function(){
-  
+
   assert.throws(forEach);
   assert.throws(forEach.bind(null, {}));
-  
+
 });
 
 it('should pass the file as the second argument to the function', function(cb){
-    
+
   var stream = forEach(function(stream, file){
-    return stream.pipe(through(function(data){
+    return stream.pipe(through.obj(function(data, enc, done){
       assert.equal(data, file);
+      done();
     }));
+  });
+
+  stream.on('data', function(){
+
+  });
+
+  stream.on('end', function(){
+    cb();
   });
 
   stream.write(new gutil.File({
@@ -133,10 +130,33 @@ it('should pass the file as the second argument to the function', function(cb){
     path: 'file.ext',
     contents: new Buffer('unicorns')
   }));
-    
+
   stream.end();
-  
+});
+
+it('should handle many files', function(cb){
+  var stream = forEach(function(stream, file){
+    return stream;
+  });
+
+  var count = 0;
+
+  stream.on('data', function(file){
+    count++;
+  });
+
   stream.on('end', function(){
+    assert.equal(32, count);
     cb();
   });
+
+  for(var i = 0; i < 32; i++){
+    stream.write(new gutil.File({
+      base: __dirname,
+      path: 'file'+i+'.ext',
+      contents: new Buffer(i+'unicorns')
+    }));
+  }
+
+  stream.end();
 });
