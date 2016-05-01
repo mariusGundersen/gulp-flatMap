@@ -10,7 +10,7 @@ var Transform = Stream.Transform;
 module.exports = function (func) {
 
   if (!func || typeof func != 'function') {
-    throw new gutil.PluginError('gulp-forEach', '`forEach` must be called with one parameter, a function');
+    throw new gutil.PluginError('gulp-flatMap', '`flatMap` must be called with one parameter, a function');
   }
 
   var openStreams = [];
@@ -31,7 +31,7 @@ module.exports = function (func) {
   return through.obj(function(data, enc, done){
 
     if (data.isStream()) {
-      this.emit('error', new gutil.PluginError('gulp-forEach', 'Streaming not supported'));
+      this.emit('error', new gutil.PluginError('gulp-flatMap', 'Streaming not supported'));
       return;
     }
 
@@ -71,7 +71,7 @@ module.exports = function (func) {
         done(error);
       });
     }else{
-      this.emit('error', new gutil.PluginError('gulp-forEach', 'The function must return a stream'));
+      this.emit('error', new gutil.PluginError('gulp-flatMap', 'The function must return a stream'));
       return;
     }
   }, function(){

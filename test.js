@@ -1,14 +1,14 @@
 'use strict';
 var assert = require('assert');
 var gutil = require('gulp-util');
-var forEach = require('./index');
+var flatMap = require('./index');
 var through = require('through2');
 
 it('should call the function once per file', function (cb) {
 
   var count = 0;
 
-  var stream = forEach(function(stream){
+  var stream = flatMap(function(stream){
     count++;
     return stream;
   });
@@ -39,7 +39,7 @@ it('should call the function once per file', function (cb) {
 
 it('should require the function returns a stream', function (cb) {
 
-  var stream = forEach(function(stream){
+  var stream = flatMap(function(stream){
   });
 
   stream.on('data', function (file) {
@@ -66,7 +66,7 @@ it('should support multiple outputs', function (cb) {
 
   var count = 0;
 
-  var stream = forEach(function(stream){
+  var stream = flatMap(function(stream){
     return stream.pipe(through.obj(function(file, enc, done){
       this.push(file);
       this.push(file);
@@ -103,14 +103,14 @@ it('should support multiple outputs', function (cb) {
 
 it('should throw an error if not called with a function', function(){
 
-  assert.throws(forEach);
-  assert.throws(forEach.bind(null, {}));
+  assert.throws(flatMap);
+  assert.throws(flatMap.bind(null, {}));
 
 });
 
 it('should pass the file as the second argument to the function', function(cb){
 
-  var stream = forEach(function(stream, file){
+  var stream = flatMap(function(stream, file){
     return stream.pipe(through.obj(function(data, enc, done){
       assert.equal(data, file);
       done();
@@ -135,7 +135,7 @@ it('should pass the file as the second argument to the function', function(cb){
 });
 
 it('should handle many files', function(cb){
-  var stream = forEach(function(stream, file){
+  var stream = flatMap(function(stream, file){
     return stream;
   });
 

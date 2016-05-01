@@ -1,9 +1,9 @@
 {
-  "name": "gulp-foreach",
-  "version": "0.1.0",
-  "description": "Send each file in a stream down its own stream",
+  "name": "gulp-flatmap",
+  "version": "1.0.0",
+  "description": "map each file in a stream into multiple files that are piped out",
   "license": "MIT",
-  "repository": "mariusGundersen/gulp-forEach",
+  "repository": "mariusGundersen/gulp-flatmap",
   "author": {
     "name": "Marius Gundersen",
     "email": "me@mariusgundersen.net",
@@ -20,7 +20,7 @@
   ],
   "keywords": [
     "gulpplugin",
-    "forEach",
+    "flatmap",
     "split",
     "fork",
     "divide",
