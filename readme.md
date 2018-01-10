@@ -38,7 +38,7 @@ gulp.task('default', function () {
 
 The flatmap method takes one argument, a function. This function is called once for each file piped to `flatmap` and is passed a stream as its first argument and the [vinyl file](https://github.com/wearefractal/vinyl) as its second argument. The stream contains only one file.
 
-You can optionally return a stream from the `flatmap` function. All the streams returned from `flatmap` will be combined and their contents will be emited by `flatmap`.
+You can now pipe this stream through as many steps as you want, before returning it from the function. All the streams returned from `flatmap` will be combined and their contents will be emited by `flatmap`.
 
 ## License
 
