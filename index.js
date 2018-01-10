@@ -1,5 +1,5 @@
 'use strict';
-var gutil = require('gulp-util');
+var PluginError = require('plugin-error');
 var through = require('through2');
 var Stream = require('stream');
 var utils = require('util');
@@ -10,7 +10,7 @@ var Transform = Stream.Transform;
 module.exports = function (func) {
 
   if (!func || typeof func != 'function') {
-    throw new gutil.PluginError('gulp-flatMap', '`flatMap` must be called with one parameter, a function');
+    throw new PluginError('gulp-flatMap', '`flatMap` must be called with one parameter, a function');
   }
 
   var openStreams = [];
@@ -31,7 +31,7 @@ module.exports = function (func) {
   return through.obj(function(data, enc, done){
 
     if (data.isStream()) {
-      this.emit('error', new gutil.PluginError('gulp-flatMap', 'Streaming not supported'));
+      this.emit('error', new PluginError('gulp-flatMap', 'Streaming not supported'));
       return;
     }
 
@@ -71,7 +71,7 @@ module.exports = function (func) {
         done(error);
       });
     }else{
-      this.emit('error', new gutil.PluginError('gulp-flatMap', 'The function must return a stream'));
+      this.emit('error', new PluginError('gulp-flatMap', 'The function must return a stream'));
       return;
     }
   }, function(){

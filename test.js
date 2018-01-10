@@ -1,6 +1,6 @@
 'use strict';
 var assert = require('assert');
-var gutil = require('gulp-util');
+var Vinyl = require('vinyl');
 var flatMap = require('./index');
 var through = require('through2');
 
@@ -22,13 +22,13 @@ it('should call the function once per file', function (cb) {
     cb();
   });
 
-  stream.write(new gutil.File({
+  stream.write(new Vinyl({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
   }));
 
-  stream.write(new gutil.File({
+  stream.write(new Vinyl({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
@@ -53,7 +53,7 @@ it('should require the function returns a stream', function (cb) {
     cb.fail();
   });
 
-  stream.write(new gutil.File({
+  stream.write(new Vinyl({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
@@ -85,13 +85,13 @@ it('should support multiple outputs', function (cb) {
     cb();
   });
 
-  stream.write(new gutil.File({
+  stream.write(new Vinyl({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
   }));
 
-  stream.write(new gutil.File({
+  stream.write(new Vinyl({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
@@ -125,7 +125,7 @@ it('should pass the file as the second argument to the function', function(cb){
     cb();
   });
 
-  stream.write(new gutil.File({
+  stream.write(new Vinyl({
     base: __dirname,
     path: 'file.ext',
     contents: new Buffer('unicorns')
@@ -151,7 +151,7 @@ it('should handle many files', function(cb){
   });
 
   for(var i = 0; i < 32; i++){
-    stream.write(new gutil.File({
+    stream.write(new Vinyl({
       base: __dirname,
       path: 'file'+i+'.ext',
       contents: new Buffer(i+'unicorns')
