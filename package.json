@@ -1,6 +1,6 @@
 {
   "name": "gulp-flatmap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "map each file in a stream into multiple files that are piped out",
   "license": "MIT",
   "repository": "mariusGundersen/gulp-flatmap",
