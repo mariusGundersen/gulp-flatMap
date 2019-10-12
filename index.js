@@ -2,10 +2,7 @@
 var PluginError = require('plugin-error');
 var through = require('through2');
 var Stream = require('stream');
-var utils = require('util');
 var Readable = Stream.Readable;
-var Duplex = Stream.Duplex;
-var Transform = Stream.Transform;
 
 module.exports = function (func) {
 
@@ -23,8 +20,6 @@ module.exports = function (func) {
       if(ended && !error){
         stream.push(null);
       }
-    }else{
-
     }
   }
 
