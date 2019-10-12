@@ -23,7 +23,7 @@ module.exports = function (func) {
     }
   }
 
-  return through.obj(function(data, enc, done){
+  return through.obj(async function(data, enc, done){
 
     if (data.isStream()) {
       this.emit('error', new PluginError('gulp-flatMap', 'Streaming not supported'));
@@ -43,7 +43,7 @@ module.exports = function (func) {
       }
     };
 
-    var resultStream = func(readStream, data);
+    var resultStream = await func(readStream, data);
 
     if(resultStream
     && typeof resultStream === 'object'
